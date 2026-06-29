@@ -5,22 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pahlawan Indonesia</title>
     <meta name="description" content="Daftar lengkap Pahlawan Nasional Indonesia">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         :root {
-            --bg: #0a0a0a;
-            --card: #141414;
-            --card-hover: #1a1a1a;
-            --border: #222;
+            --bg: #050505;
+            --bg2: #0a0a0a;
+            --card: rgba(255,255,255,0.03);
+            --card-hover: rgba(255,255,255,0.06);
+            --border: rgba(255,255,255,0.06);
             --text: #fafafa;
-            --text-dim: #888;
-            --accent: #ef4444;
-            --accent-glow: rgba(239,68,68,0.15);
+            --text2: rgba(255,255,255,0.6);
+            --text3: rgba(255,255,255,0.4);
+            --red: #dc2626;
+            --red-light: #ef4444;
+            --red-glow: rgba(220,38,38,0.15);
             --gold: #f59e0b;
+            --gold-glow: rgba(245,158,11,0.15);
+            --blue: #3b82f6;
+            --green: #22c55e;
+            --purple: #a855f7;
+            --cyan: #06b6d4;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
         body {
             font-family:'Plus Jakarta Sans',sans-serif;
             background:var(--bg);
@@ -28,361 +37,339 @@
             line-height:1.6;
             -webkit-font-smoothing:antialiased;
         }
-        a { color:inherit; text-decoration:none; }
 
         /* NAV */
         nav {
             position:fixed; top:0; width:100%; z-index:100;
-            padding:16px 0;
-            background:rgba(10,10,10,0.9);
+            padding:20px 0;
+            background:rgba(5,5,5,0.85);
             backdrop-filter:blur(20px);
-            border-bottom:1px solid var(--border);
+            border-bottom:1px solid rgba(255,255,255,0.05);
+            transition:all .3s;
         }
+        nav.shrink { padding:12px 0; }
         .nav-inner {
-            max-width:1100px; margin:0 auto; padding:0 24px;
+            max-width:1200px; margin:0 auto; padding:0 32px;
             display:flex; justify-content:space-between; align-items:center;
         }
         .logo {
-            font-weight:800; font-size:1.3rem; letter-spacing:-0.5px;
-            display:flex; align-items:center; gap:10px;
+            font-weight:900; font-size:1.3rem;
+            display:flex; align-items:center; gap:12px;
         }
-        .logo i { color:var(--accent); font-size:1.1rem; }
-        .nav-links { display:flex; gap:24px; list-style:none; }
+        .logo-icon {
+            width:36px; height:36px; border-radius:10px;
+            background:linear-gradient(135deg, var(--red), var(--gold));
+            display:flex; align-items:center; justify-content:center;
+            color:#fff; font-size:.9rem;
+        }
+        .nav-links { display:flex; gap:28px; list-style:none; }
         .nav-links a {
-            font-size:.85rem; font-weight:500; color:var(--text-dim);
+            font-size:.85rem; font-weight:500; color:var(--text2);
             transition:color .2s;
         }
         .nav-links a:hover { color:var(--text); }
+        .hamburger {
+            display:none; background:none; border:none;
+            color:var(--text); font-size:1.3rem; cursor:pointer;
+        }
 
         /* HERO */
         .hero {
-            padding:120px 0 60px;
+            min-height:100vh; display:flex; align-items:center;
+            position:relative; overflow:hidden;
+        }
+        .hero-bg {
+            position:absolute; inset:0;
+            background:radial-gradient(ellipse at 50% 0%, rgba(245,158,11,0.12) 0%, transparent 60%);
+        }
+        .hero-grid {
+            position:absolute; inset:0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+            background-size:60px 60px;
+            mask-image:radial-gradient(ellipse at 50% 50%, black, transparent);
+        }
+        .hero-content {
+            position:relative; z-index:2;
+            max-width:1200px; margin:0 auto; padding:120px 32px 0;
             text-align:center;
-            background:linear-gradient(180deg, rgba(239,68,68,0.08) 0%, transparent 100%);
         }
+        .hero-badge {
+            display:inline-flex; align-items:center; gap:8px;
+            padding:8px 20px; border-radius:100px;
+            background:rgba(255,255,255,0.04);
+            border:1px solid rgba(255,255,255,0.08);
+            font-size:.8rem; font-weight:600; color:var(--text2);
+            margin-bottom:32px;
+        }
+        .hero-badge i { color:var(--gold); }
         .hero h1 {
-            font-size:3rem; font-weight:800; letter-spacing:-1.5px;
-            line-height:1.1; margin-bottom:16px;
+            font-size:clamp(2.8rem, 7vw, 5.5rem);
+            font-weight:900; letter-spacing:-2px;
+            line-height:1; margin-bottom:24px;
         }
-        .hero h1 span { color:var(--accent); }
+        .hero h1 .accent { color:var(--gold); }
         .hero p {
-            color:var(--text-dim); font-size:1.05rem;
-            max-width:500px; margin:0 auto 32px;
+            font-size:1.15rem; color:var(--text2);
+            max-width:550px; margin:0 auto 48px; line-height:1.8;
         }
         .hero-stats {
-            display:flex; justify-content:center; gap:40px;
-        }
-        .stat-item {
-            text-align:center;
+            display:flex; justify-content:center; gap:56px; flex-wrap:wrap;
         }
         .stat-num {
-            font-size:2rem; font-weight:800; color:var(--accent);
+            font-size:2.8rem; font-weight:900;
+            background:linear-gradient(135deg, var(--text), var(--text2));
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
         }
         .stat-label {
-            font-size:.8rem; color:var(--text-dim); font-weight:500;
+            font-size:.8rem; color:var(--text3); font-weight:500; margin-top:4px;
         }
 
-        /* MAIN */
-        .wrap { max-width:1100px; margin:0 auto; padding:0 24px; }
+        /* LAYOUT */
+        .wrap { max-width:1200px; margin:0 auto; padding:0 32px; }
+        section { padding:80px 0; }
 
-        /* SEARCH & FILTER */
-        .search-section {
-            padding:32px 0;
-            position:sticky; top:60px; z-index:50;
-            background:rgba(10,10,10,0.95);
-            backdrop-filter:blur(10px);
-            border-bottom:1px solid var(--border);
-        }
+        /* SEARCH BAR */
         .search-bar {
             display:flex; gap:12px; flex-wrap:wrap;
+            margin-bottom:40px;
+            position:sticky; top:70px; z-index:50;
+            background:rgba(5,5,5,0.9); backdrop-filter:blur(10px);
+            padding:16px 0; margin-top:-16px;
         }
         .search-input {
             flex:1; min-width:250px;
             padding:14px 20px; border-radius:14px;
             border:1px solid var(--border); background:var(--card);
-            color:var(--text); font-size:.9rem;
-            font-family:inherit;
+            color:var(--text); font-size:.9rem; font-family:inherit;
             transition:all .2s;
         }
         .search-input:focus {
-            outline:none; border-color:var(--accent);
-            box-shadow:0 0 0 3px var(--accent-glow);
+            outline:none; border-color:var(--gold);
+            box-shadow:0 0 0 3px var(--gold-glow);
         }
-        .search-input::placeholder { color:var(--text-dim); }
+        .search-input::placeholder { color:var(--text3); }
         .filter-btn {
-            padding:14px 24px; border-radius:14px;
-            border:1px solid var(--border); background:var(--card);
-            color:var(--text-dim); font-size:.85rem; font-weight:600;
-            cursor:pointer; transition:all .2s;
-            font-family:inherit;
-        }
-        .filter-btn:hover, .filter-btn.active {
-            border-color:var(--accent); color:var(--text);
-            background:var(--accent-glow);
-        }
-        .filter-select {
             padding:14px 20px; border-radius:14px;
             border:1px solid var(--border); background:var(--card);
-            color:var(--text-dim); font-size:.85rem; font-weight:600;
-            cursor:pointer; transition:all .2s;
-            font-family:inherit;
+            color:var(--text2); font-size:.8rem; font-weight:600;
+            cursor:pointer; transition:all .2s; font-family:inherit;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            border-color:var(--gold); color:var(--text); background:var(--gold-glow);
+        }
+        .filter-select {
+            padding:14px 36px 14px 16px; border-radius:14px;
+            border:1px solid var(--border); background:var(--card);
+            color:var(--text2); font-size:.8rem; font-weight:600;
+            cursor:pointer; transition:all .2s; font-family:inherit;
             appearance:none;
             background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
             background-repeat:no-repeat;
-            background-position:right 14px center;
-            padding-right:36px;
+            background-position:right 12px center;
         }
-        .filter-select:focus {
-            outline:none; border-color:var(--accent);
-        }
-        .filter-select option {
-            background:var(--card); color:var(--text);
-        }
-        .region-tag {
-            padding:4px 10px; border-radius:100px;
-            font-size:.7rem; font-weight:600;
-            background:rgba(99,102,241,0.15); color:#6366f1;
-        }
+        .filter-select:focus { outline:none; border-color:var(--gold); }
+        .filter-select option { background:var(--bg); color:var(--text); }
 
-        /* GRID */
+        /* HERO CARDS */
         .heroes-grid {
             display:grid;
             grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));
-            gap:16px;
-            padding:32px 0 80px;
+            gap:20px;
         }
-
-        /* CARD */
         .hero-card {
             background:var(--card); border:1px solid var(--border);
-            border-radius:18px; padding:24px;
-            transition:all .3s;
-            cursor:pointer;
-            position:relative;
-            overflow:hidden;
+            border-radius:20px; padding:28px;
+            transition:all .3s; cursor:pointer;
+            position:relative; overflow:hidden;
         }
         .hero-card:hover {
-            background:var(--card-hover);
-            border-color:var(--accent);
-            transform:translateY(-4px);
-            box-shadow:0 20px 40px rgba(0,0,0,0.3);
+            background:var(--card-hover); border-color:rgba(245,158,11,0.3);
+            transform:translateY(-4px); box-shadow:0 16px 32px rgba(0,0,0,0.2);
         }
         .hero-card::before {
             content:''; position:absolute; top:0; left:0; right:0;
-            height:3px; background:var(--accent);
+            height:3px; background:linear-gradient(90deg, var(--gold), var(--red));
             transform:scaleX(0); transition:transform .3s;
         }
         .hero-card:hover::before { transform:scaleX(1); }
-        .card-header {
+        .card-top {
             display:flex; justify-content:space-between; align-items:flex-start;
             margin-bottom:12px;
         }
-        .hero-name {
-            font-size:1.1rem; font-weight:700;
-            line-height:1.3;
-        }
-        .hero-year-badge {
+        .hero-name { font-size:1.05rem; font-weight:700; line-height:1.3; }
+        .hero-year {
             padding:4px 12px; border-radius:100px;
             font-size:.7rem; font-weight:600;
-            background:var(--accent-glow); color:var(--accent);
+            background:var(--gold-glow); color:var(--gold);
             white-space:nowrap;
         }
-        .hero-life {
-            font-size:.85rem; color:var(--text-dim);
-            margin-bottom:12px;
-            display:flex; align-items:center; gap:8px;
-        }
-        .hero-life i { font-size:.7rem; color:var(--accent); }
-        .hero-desc {
-            font-size:.85rem; color:var(--text-dim);
-            line-height:1.6;
-            display:-webkit-box;
-            -webkit-line-clamp:3;
-            -webkit-box-orient:vertical;
-            overflow:hidden;
-        }
-        .hero-tags {
-            display:flex; gap:8px; flex-wrap:wrap;
-            margin-top:16px;
-        }
-        .tag {
-            padding:4px 10px; border-radius:100px;
-            font-size:.7rem; font-weight:600;
-            background:rgba(245,158,11,0.15); color:var(--gold);
-        }
-        .category-badge {
+        .hero-cat {
             display:inline-flex; align-items:center; gap:6px;
-            padding:6px 14px; border-radius:100px;
-            font-size:.75rem; font-weight:700;
-            margin-bottom:12px;
+            padding:5px 12px; border-radius:100px;
+            font-size:.7rem; font-weight:700;
+            margin-bottom:10px;
         }
-        .category-badge.revolusi {
-            background:rgba(239,68,68,0.2); color:#ef4444;
-            border:1px solid rgba(239,68,68,0.3);
+        .hero-cat.revolusi { background:rgba(239,68,68,0.15); color:#ef4444; }
+        .hero-cat.kemerdekaan { background:rgba(34,197,94,0.15); color:#22c55e; }
+        .hero-cat.perintis { background:rgba(168,85,247,0.15); color:#a855f7; }
+        .hero-cat.pendidikan { background:rgba(59,130,246,0.15); color:#3b82f6; }
+        .hero-cat.ulama { background:rgba(234,179,8,0.15); color:#eab308; }
+        .hero-cat.pembangunan { background:rgba(6,182,212,0.15); color:#06b6d4; }
+        .hero-life {
+            font-size:.8rem; color:var(--text3);
+            margin-bottom:10px; display:flex; align-items:center; gap:8px;
         }
-        .category-badge.kemerdekaan {
-            background:rgba(34,197,94,0.2); color:#22c55e;
-            border:1px solid rgba(34,197,94,0.3);
+        .hero-life i { font-size:.6rem; color:var(--gold); }
+        .hero-desc {
+            font-size:.82rem; color:var(--text2); line-height:1.7;
+            display:-webkit-box; -webkit-line-clamp:3;
+            -webkit-box-orient:vertical; overflow:hidden;
+            margin-bottom:14px;
         }
-        .category-badge.perintis {
-            background:rgba(168,85,247,0.2); color:#a855f7;
-            border:1px solid rgba(168,85,247,0.3);
+        .hero-tags { display:flex; gap:6px; flex-wrap:wrap; }
+        .hero-tag {
+            padding:4px 10px; border-radius:100px;
+            font-size:.65rem; font-weight:600;
+            background:rgba(255,255,255,0.04); color:var(--text2);
         }
-        .category-badge.pendidikan {
-            background:rgba(59,130,246,0.2); color:#3b82f6;
-            border:1px solid rgba(59,130,246,0.3);
-        }
-        .category-badge.ulama {
-            background:rgba(234,179,8,0.2); color:#eab308;
-            border:1px solid rgba(234,179,8,0.3);
-        }
-        .category-badge.pembangunan {
-            background:rgba(6,182,212,0.2); color:#06b6d4;
-            border:1px solid rgba(6,182,212,0.3);
-        }
+        .hero-tag.region { background:rgba(99,102,241,0.12); color:#818cf8; }
 
         /* MODAL */
-        .modal-overlay {
+        .modal-bg {
             position:fixed; inset:0; z-index:200;
-            background:rgba(0,0,0,0.8);
-            backdrop-filter:blur(8px);
+            background:rgba(0,0,0,0.85); backdrop-filter:blur(16px);
             display:flex; align-items:center; justify-content:center;
-            padding:24px;
+            padding:24px; opacity:0; visibility:hidden; transition:all .3s;
         }
+        .modal-bg.open { opacity:1; visibility:visible; }
         .modal {
-            background:var(--card); border:1px solid var(--border);
-            border-radius:24px; padding:40px;
-            max-width:600px; width:100%;
-            max-height:80vh; overflow-y:auto;
+            background:var(--bg2); border:1px solid var(--border);
+            border-radius:28px; max-width:700px; width:100%;
+            max-height:85vh; overflow-y:auto;
+            transform:scale(0.95) translateY(16px); transition:all .3s;
+        }
+        .modal-bg.open .modal { transform:scale(1) translateY(0); }
+        .modal-head {
+            padding:40px 40px 28px;
+            background:linear-gradient(180deg, rgba(245,158,11,0.08), transparent);
+            border-bottom:1px solid var(--border);
             position:relative;
         }
         .modal-close {
             position:absolute; top:16px; right:16px;
-            background:none; border:none; color:var(--text-dim);
-            font-size:1.2rem; cursor:pointer;
-            transition:color .2s;
+            width:36px; height:36px; border-radius:10px;
+            background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);
+            color:var(--text2); display:flex; align-items:center; justify-content:center;
+            cursor:pointer; transition:all .2s;
         }
-        .modal-close:hover { color:var(--text); }
-        .modal h2 {
-            font-size:1.6rem; font-weight:800;
-            margin-bottom:8px;
+        .modal-close:hover { background:rgba(255,255,255,0.08); color:var(--text); }
+        .modal-name { font-size:1.6rem; font-weight:800; letter-spacing:-0.5px; margin-bottom:8px; }
+        .modal-life { color:var(--gold); font-weight:600; font-size:.9rem; margin-bottom:4px; }
+        .modal-ascend { color:var(--text3); font-size:.8rem; }
+        .modal-body { padding:28px 40px 40px; }
+        .modal-section { margin-bottom:28px; }
+        .modal-sec-title {
+            font-size:.7rem; font-weight:700;
+            text-transform:uppercase; letter-spacing:1px;
+            color:var(--text3); margin-bottom:10px;
         }
-        .modal .life {
-            color:var(--accent); font-weight:600;
-            margin-bottom:20px;
+        .modal-text { color:var(--text2); font-size:.9rem; line-height:1.8; }
+        .detail-grid {
+            display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px;
         }
-        .modal .desc {
-            color:var(--text-dim); font-size:.95rem;
-            line-height:1.8;
+        .detail-item {
+            background:rgba(255,255,255,0.02); border-radius:14px; padding:16px;
         }
-        .modal .info-grid {
-            display:grid; grid-template-columns:1fr 1fr;
-            gap:16px; margin-top:24px;
-        }
-        .modal .info-item {
-            background:rgba(255,255,255,0.03);
-            border-radius:12px; padding:16px;
-        }
-        .modal .info-label {
-            font-size:.75rem; color:var(--text-dim);
-            font-weight:500; margin-bottom:4px;
-        }
-        .modal .info-value {
-            font-size:1rem; font-weight:700;
-        }
+        .detail-label { font-size:.7rem; color:var(--text3); font-weight:500; margin-bottom:2px; }
+        .detail-value { font-size:.95rem; font-weight:700; }
 
         /* LOADING */
-        .loading {
-            text-align:center; padding:60px 0;
-        }
-        .loading i {
-            font-size:2rem; color:var(--accent);
-            animation:spin 1s linear infinite;
-        }
+        .loading { text-align:center; padding:60px 0; }
+        .loading i { font-size:2rem; color:var(--gold); animation:spin 1s linear infinite; }
         @keyframes spin { to { transform:rotate(360deg); } }
 
         /* EMPTY */
-        .empty {
-            text-align:center; padding:80px 0;
-            color:var(--text-dim);
-        }
+        .empty { text-align:center; padding:80px 0; color:var(--text3); }
         .empty i { font-size:3rem; margin-bottom:16px; display:block; }
 
-        /* BACK TO TOP */
+        /* BACK TOP */
         .back-top {
             position:fixed; bottom:24px; right:24px;
             width:48px; height:48px; border-radius:14px;
-            background:var(--accent); color:#fff;
+            background:var(--gold); color:#000;
             display:flex; align-items:center; justify-content:center;
-            font-size:1rem; cursor:pointer;
-            border:none; opacity:0; transform:translateY(20px);
+            font-size:1rem; cursor:pointer; border:none;
+            opacity:0; transform:translateY(20px);
             transition:all .3s; z-index:90;
         }
-        .back-top.show {
-            opacity:1; transform:translateY(0);
-        }
-        .back-top:hover {
-            transform:translateY(-2px);
-            box-shadow:0 8px 24px rgba(239,68,68,0.4);
-        }
+        .back-top.show { opacity:1; transform:translateY(0); }
+        .back-top:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(245,158,11,0.3); }
 
         /* FOOTER */
         footer {
-            padding:32px 0; text-align:center;
-            border-top:1px solid var(--border);
-            font-size:.8rem; color:var(--text-dim);
+            padding:40px 0; text-align:center;
+            border-top:1px solid rgba(255,255,255,0.04);
         }
+        footer p { color:var(--text3); font-size:.8rem; }
+        footer a { color:var(--gold); text-decoration:none; }
 
         /* RESPONSIVE */
         @media(max-width:768px) {
-            .hero h1 { font-size:2rem; }
-            .hero-stats { gap:24px; }
-            .stat-num { font-size:1.5rem; }
+            .nav-links { display:none; }
+            .hamburger { display:block; }
+            .hero h1 { letter-spacing:-1px; }
+            .hero-stats { gap:28px; }
+            .stat-num { font-size:2rem; }
             .heroes-grid { grid-template-columns:1fr; }
-            .modal { padding:24px; }
-            .modal .info-grid { grid-template-columns:1fr; }
+            .detail-grid { grid-template-columns:1fr; }
+            .modal-head, .modal-body { padding:24px; }
         }
     </style>
 </head>
-<body x-data="pahlawanApp()">
+<body x-data="app()">
 
-<nav>
+<nav :class="{shrink:scrolled}">
     <div class="nav-inner">
         <div class="logo">
-            <i class="fas fa-star"></i>
-            Pahlawan Indonesia
+            <div class="logo-icon"><i class="fas fa-star"></i></div>
+            Pahlawan RI
         </div>
+        <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('show')">
+            <i class="fas fa-bars"></i>
+        </button>
         <ul class="nav-links">
-            <li><a href="#" @click.prevent="scrollToTop()">Beranda</a></li>
-            <li><a href="https://syaptiyan.github.io" target="_blank">← Kembali ke Portfolio</a></li>
+            <li><a href="#beranda">Beranda</a></li>
+            <li><a href="#daftar">Daftar Pahlawan</a></li>
+            <li><a href="https://syaptiyan.github.io" target="_blank">← Portfolio</a></li>
         </ul>
     </div>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-    <div class="wrap">
-        <h1>Pahlawan<br><span>Nasional Indonesia</span></h1>
-        <p>Mengenal dan mengenang jasa pahlawan yang berjuang untuk kemerdekaan dan kemajuan bangsa Indonesia.</p>
+<section class="hero" id="beranda">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+        <div class="hero-badge"><i class="fas fa-medal"></i> Pahlawan Nasional</div>
+        <h1>Pahlawan<br><span class="accent">Indonesia</span></h1>
+        <p>Mengenal dan mengenang jasa para pahlawan yang berjuang untuk kemerdekaan dan kemajuan bangsa Indonesia.</p>
         <div class="hero-stats">
-            <div class="stat-item">
-                <div class="stat-num" x-text="heroes.length">0</div>
-                <div class="stat-label">Total Pahlawan</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-num" x-text="filteredHeroes.length">0</div>
-                <div class="stat-label">Ditampilkan</div>
-            </div>
+            <div><div class="stat-num" x-text="heroes.length || '...'">0</div><div class="stat-label">Total Pahlawan</div></div>
+            <div><div class="stat-num" x-text="filtered.length || '...'">0</div><div class="stat-label">Ditampilkan</div></div>
+            <div><div class="stat-num">8</div><div class="stat-label">Provinsi</div></div>
         </div>
     </div>
 </section>
 
-<!-- SEARCH -->
-<section class="search-section">
+<!-- DAftar -->
+<section id="daftar">
     <div class="wrap">
+        <!-- SEARCH -->
         <div class="search-bar">
-            <input type="text" class="search-input" placeholder="Cari pahlawan..." x-model="search" @input="filterHeroes()">
-            <select class="filter-select" x-model="selectedRegion" @change="filterHeroes()">
+            <input type="text" class="search-input" placeholder="Cari nama pahlawan..." x-model="q" @input="filter()">
+            <select class="filter-select" x-model="region" @change="filter()">
                 <option value="">Semua Daerah</option>
                 <option value="aceh">Aceh</option>
                 <option value="sumatera">Sumatera</option>
@@ -393,64 +380,46 @@
                 <option value="maluku">Maluku</option>
                 <option value="papua">Papua</option>
             </select>
-            <button class="filter-btn" :class="{ active: sortBy === 'name' }" @click="sortHeroes('name')">
+            <button class="filter-btn" :class="{active:sort==='name'}" @click="sortBy('name')">
                 <i class="fas fa-sort-alpha-down"></i> Nama
             </button>
-            <button class="filter-btn" :class="{ active: sortBy === 'year' }" @click="sortHeroes('year')">
+            <button class="filter-btn" :class="{active:sort==='year'}" @click="sortBy('year')">
                 <i class="fas fa-sort-numeric-down"></i> Tahun
             </button>
         </div>
-    </div>
-</section>
 
-<!-- GRID -->
-<section>
-    <div class="wrap">
-        <!-- Loading -->
-        <div class="loading" x-show="loading">
-            <i class="fas fa-spinner"></i>
-        </div>
+        <!-- LOADING -->
+        <div class="loading" x-show="loading"><i class="fas fa-spinner"></i></div>
 
-        <!-- Empty -->
-        <div class="empty" x-show="!loading && filteredHeroes.length === 0">
+        <!-- EMPTY -->
+        <div class="empty" x-show="!loading && filtered.length===0">
             <i class="fas fa-search"></i>
-            <p>Tidak ada pahlawan yang ditemukan.</p>
+            <p>Tidak ada pahlawan ditemukan.</p>
         </div>
 
-        <!-- Grid -->
-        <div class="heroes-grid" x-show="!loading && filteredHeroes.length > 0">
-            <template x-for="hero in filteredHeroes" :key="hero.name">
-                <div class="hero-card" @click="openModal(hero)">
-                    <div class="card-header">
-                        <div class="hero-name" x-text="hero.name"></div>
-                        <div class="hero-year-badge" x-text="hero.ascension_year"></div>
+        <!-- GRID -->
+        <div class="heroes-grid" x-show="!loading && filtered.length>0">
+            <template x-for="h in filtered" :key="h.name">
+                <div class="hero-card" @click="open(h)">
+                    <div class="card-top">
+                        <div class="hero-name" x-text="h.name"></div>
+                        <div class="hero-year" x-text="h.ascension_year"></div>
                     </div>
-                    <div class="category-badge" :class="getCategory(hero).class" x-show="getCategory(hero).name !== ''">
-                        <i :class="getCategory(hero).icon"></i>
-                        <span x-text="getCategory(hero).name"></span>
+                    <div class="hero-cat" :class="cat(h).cls" x-show="cat(h).name">
+                        <i :class="cat(h).icon"></i>
+                        <span x-text="cat(h).name"></span>
                     </div>
                     <div class="hero-life">
                         <i class="fas fa-circle"></i>
-                        <span x-text="hero.birth_year + ' — ' + hero.death_year"></span>
+                        <span x-text="h.birth_year+' — '+h.death_year"></span>
                     </div>
-                    <div class="hero-desc" x-text="hero.description || 'Tidak ada deskripsi tersedia.'"></div>
+                    <div class="hero-desc" x-text="h.description||'Tidak ada deskripsi.'"></div>
                     <div class="hero-tags">
-                        <span class="region-tag" x-show="getRegion(hero) !== ''" x-text="getRegion(hero)"></span>
-                        <span class="tag" x-show="hero.description && hero.description.toLowerCase().includes('militer')">
-                            <i class="fas fa-shield-halved"></i> Militer
-                        </span>
-                        <span class="tag" x-show="hero.description && hero.description.toLowerCase().includes('politisi')">
-                            <i class="fas fa-landmark"></i> Politisi
-                        </span>
-                        <span class="tag" x-show="hero.description && hero.description.toLowerCase().includes('aktivis')">
-                            <i class="fas fa-fist-raised"></i> Aktivis
-                        </span>
-                        <span class="tag" x-show="hero.description && hero.description.toLowerCase().includes('islam')">
-                            <i class="fas fa-mosque"></i> Ulama
-                        </span>
-                        <span class="tag" x-show="hero.description && hero.description.toLowerCase().includes('sultan')">
-                            <i class="fas fa-crown"></i> Sultan
-                        </span>
+                        <span class="hero-tag region" x-show="reg(h)" x-text="reg(h)"></span>
+                        <span class="hero-tag" x-show="h.description&&h.description.toLowerCase().includes('militer')"><i class="fas fa-shield-halved"></i> Militer</span>
+                        <span class="hero-tag" x-show="h.description&&h.description.toLowerCase().includes('politisi')"><i class="fas fa-landmark"></i> Politisi</span>
+                        <span class="hero-tag" x-show="h.description&&h.description.toLowerCase().includes('aktivis')"><i class="fas fa-fist-raised"></i> Aktivis</span>
+                        <span class="hero-tag" x-show="h.description&&h.description.toLowerCase().includes('sultan')"><i class="fas fa-crown"></i> Sultan</span>
                     </div>
                 </div>
             </template>
@@ -459,209 +428,135 @@
 </section>
 
 <!-- MODAL -->
-<div class="modal-overlay" x-show="modalOpen" x-transition @click.self="closeModal()">
-    <div class="modal" x-show="modalOpen" x-transition>
-        <button class="modal-close" @click="closeModal()">
-            <i class="fas fa-times"></i>
-        </button>
-        <h2 x-text="selectedHero?.name"></h2>
-        <div class="life">
-            <span x-text="selectedHero?.birth_year + ' — ' + selectedHero?.death_year"></span>
+<div class="modal-bg" :class="{open:modal}" @click.self="close()">
+    <div class="modal" x-show="modal" x-transition>
+        <div class="modal-head">
+            <button class="modal-close" @click="close()"><i class="fas fa-times"></i></button>
+            <div class="modal-name" x-text="sel?.name"></div>
+            <div class="modal-life" x-text="sel?.birth_year+' — '+sel?.death_year"></div>
+            <div class="modal-ascend">Ditetapkan sebagai Pahlawan Nasional tahun <strong x-text="sel?.ascension_year"></strong></div>
         </div>
-        <div class="desc" x-text="selectedHero?.description || 'Tidak ada deskripsi tersedia.'"></div>
-        <div class="info-grid">
-            <div class="info-item">
-                <div class="info-label">Tahun Lahir</div>
-                <div class="info-value" x-text="selectedHero?.birth_year"></div>
+        <div class="modal-body" x-show="sel">
+            <div class="modal-section">
+                <div class="modal-sec-title">Deskripsi</div>
+                <p class="modal-text" x-text="sel?.description||'Tidak ada deskripsi tersedia.'"></p>
             </div>
-            <div class="info-item">
-                <div class="info-label">Tahun Wafat</div>
-                <div class="info-value" x-text="selectedHero?.death_year"></div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Tahun Penetapan</div>
-                <div class="info-value" x-text="selectedHero?.ascension_year"></div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Usia</div>
-                <div class="info-value" x-text="calculateAge(selectedHero)"></div>
+            <div class="modal-section">
+                <div class="modal-sec-title">Informasi</div>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Tahun Lahir</div>
+                        <div class="detail-value" x-text="sel?.birth_year"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Tahun Wafat</div>
+                        <div class="detail-value" x-text="sel?.death_year||'-'"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Tahun Penetapan</div>
+                        <div class="detail-value" x-text="sel?.ascension_year"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Usia</div>
+                        <div class="detail-value" x-text="age(sel)"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Kategori</div>
+                        <div class="detail-value" x-text="cat(sel).name||'-'"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Daerah</div>
+                        <div class="detail-value" x-text="reg(sel)||'Tidak diketahui'"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- BACK TO TOP -->
-<button class="back-top" :class="{ show: showBackTop }" @click="scrollToTop()">
+<button class="back-top" :class="{show:showTop}" @click="window.scrollTo({top:0,behavior:'smooth'})">
     <i class="fas fa-arrow-up"></i>
 </button>
 
 <footer>
     <div class="wrap">
-        &copy; 2026 Syaptiyan Ade Putra &middot; Data dari API Pahlawan Indonesia
+        <p>&copy; 2026 Syaptiyan Ade Putra &middot; <a href="https://syaptiyan.github.io">syaptiyan.github.io</a></p>
     </div>
 </footer>
 
 <script>
-function pahlawanApp() {
+function app(){
     return {
-        heroes: [],
-        filteredHeroes: [],
-        loading: true,
-        search: '',
-        sortBy: 'name',
-        selectedRegion: '',
-        modalOpen: false,
-        selectedHero: null,
-        showBackTop: false,
-
-        regionKeywords: {
-            'aceh': ['aceh', 'banda aceh', 'teuku', 'cut nyak', 'sisingamangaraja', 'perang aceh', 'isn'],
-            'sumatera': ['sumatera', 'sumatra', 'padang', 'palembang', 'jambi', 'lampung', 'riau', 'bengkulu', 'medan', 'minang', 'batak', 'melayu'],
-            'jawa': ['jawa', 'jakarta', 'surabaya', 'bandung', 'yogyakarta', 'jogja', 'semarang', 'solo', 'surakarta', 'banten', 'cirebon', 'malang', 'bogor', 'depok', 'tanggerang', 'jawa timur', 'jawa tengah', 'jawa barat', 'dki', 'majalengka', 'blitar'],
-            'bali': ['bali', 'denpasar', 'badung', 'singaraja'],
-            'kalimantan': ['kalimantan', 'borneo', 'banjarmasin', 'pontianak', 'balikpapan', 'samarinda', 'palangkaraya', 'banjar', 'melawi'],
-            'sulawesi': ['sulawesi', 'makassar', 'manado', 'toraja', 'bugis', 'minahasa', 'gorontalo', 'palu', 'kendari'],
-            'maluku': ['maluku', 'ambon', 'ternate', 'tidore', 'pattimura', 'maluku utara'],
-            'papua': ['papua', 'jayapura', 'irian']
+        heroes:[], filtered:[], loading:true,
+        q:'', sort:'name', region:'',
+        modal:false, sel:null, showTop:false,
+        rk:{
+            aceh:['aceh','banda aceh','teuku','cut nyak','sisingamangaraja','perang aceh'],
+            sumatera:['sumatera','sumatra','padang','palembang','jambi','lampung','riau','bengkulu','medan','minang','batak','melayu'],
+            jawa:['jawa','jakarta','surabaya','bandung','yogyakarta','jogja','semarang','solo','surakarta','banten','cirebon','malang','bogor','majalengka','blitar'],
+            bali:['bali','denpasar','badung','singaraja'],
+            kalimantan:['kalimantan','borneo','banjarmasin','pontianak','balikpapan','samarinda','palangkaraya','banjar','melawi'],
+            sulawesi:['sulawesi','makassar','manado','toraja','bugis','minahasa','gorontalo','palu','kendari'],
+            maluku:['maluku','ambon','ternate','tidore','pattimura','maluku utara'],
+            papua:['papua','jayapura','irian']
         },
-
-        async init() {
-            await this.fetchHeroes();
-            window.addEventListener('scroll', () => {
-                this.showBackTop = window.scrollY > 400;
-            });
+        async init(){
+            try{
+                const r=await fetch('https://indonesia-public-static-api.vercel.app/api/heroes');
+                this.heroes=await r.json();
+            }catch(e){console.error(e);}
+            this.loading=false;
+            this.sortBy('name');
+            window.addEventListener('scroll',()=>{this.showTop=window.scrollY>400;});
         },
-
-        async fetchHeroes() {
-            try {
-                const res = await fetch('https://indonesia-public-static-api.vercel.app/api/heroes');
-                const data = await res.json();
-                this.heroes = data;
-                this.sortHeroes('name');
-            } catch (err) {
-                console.error('Gagal memuat data:', err);
-            } finally {
-                this.loading = false;
-            }
-        },
-
-        getRegion(hero) {
-            const text = (hero.name + ' ' + (hero.description || '')).toLowerCase();
-            for (const [region, keywords] of Object.entries(this.regionKeywords)) {
-                for (const kw of keywords) {
-                    if (text.includes(kw)) {
-                        const labels = {
-                            'aceh': 'Aceh',
-                            'sumatera': 'Sumatera',
-                            'jawa': 'Jawa',
-                            'bali': 'Bali',
-                            'kalimantan': 'Kalimantan',
-                            'sulawesi': 'Sulawesi',
-                            'maluku': 'Maluku',
-                            'papua': 'Papua'
-                        };
-                        return labels[region] || '';
-                    }
-                }
+        reg(h){
+            const t=(h.name+' '+(h.description||'')).toLowerCase();
+            const lbl={aceh:'Aceh',sumatera:'Sumatera',jawa:'Jawa',bali:'Bali',kalimantan:'Kalimantan',sulawesi:'Sulawesi',maluku:'Maluku',papua:'Papua'};
+            for(const[k,v]of Object.entries(this.rk)){
+                if(v.some(w=>t.includes(w)))return lbl[k];
             }
             return '';
         },
-
-        getCategory(hero) {
-            const text = (hero.name + ' ' + (hero.description || '')).toLowerCase();
-            const year = hero.ascension_year;
-            
-            // Pahlawan Revolusi - korban G30S/PKI (1965)
-            const revolusiNames = ['ahmad yani', 'suprapto', 'siswondo parman', 'mas tirtodarmo haryono', 'sutoyo', 'sutoyo siswomiharjo', 'donald izacus panjaitan', 'pierre tendean', 'katamso darmokusumo', 'sugiyono mangunwiyoto', 'karel satsuit tubun', 'ahmad yani'];
-            if (revolusiNames.some(n => text.includes(n)) || 
-                (text.includes('gerakan 30 september') || text.includes('g30s') || text.includes('terbunuh saat gerakan'))) {
-                return { name: 'Pahlawan Revolusi', class: 'revolusi', icon: 'fas fa-fire' };
-            }
-            
-            // Pahlawan Kemerdekaan - pejuang revolusi nasional 1945-1950
-            if (text.includes('revolusi nasional') || text.includes('kemerdekaan') || 
-                text.includes('proklamasi') || text.includes('aktivis kemerdekaan') ||
-                text.includes('pejuang kemerdekaan') || text.includes('nasionalis')) {
-                return { name: 'Pahlawan Kemerdekaan', class: 'kemerdekaan', icon: 'fas fa-flag' };
-            }
-            
-            // Pahlawan Perintis - pejuang sebelum 1900-an (perang kolonial)
-            if (text.includes('kolonial') || text.includes('voc') || text.includes('perang padri') ||
-                text.includes('perang banjar') || text.includes('perang aceh') ||
-                text.includes('gerilyawan') || text.includes('perlawanan terhadap')) {
-                if (year && year < 1945) {
-                    return { name: 'Pahlawan Perintis', class: 'perintis', icon: 'fas fa-chess-rook' };
-                }
-            }
-            
-            // Pahlawan Pendidikan
-            if (text.includes('pengajar') || text.includes('pendidikan') || text.includes('sekolah') ||
-                text.includes('universitas') || text.includes('guru') || text.includes('rektor') ||
-                text.includes('taman siswa') || text.includes('budi utomo')) {
-                return { name: 'Pahlawan Pendidikan', class: 'pendidikan', icon: 'fas fa-graduation-cap' };
-            }
-            
-            // Pahlawan Ulama/Tokoh Agama
-            if (text.includes('ulama') || text.includes('islam') || text.includes('muhammadiyah') ||
-                text.includes('nahdlatul ulama') || text.includes('tokoh islam') || text.includes('pesantren') ||
-                text.includes('katolik') || text.includes('gereja') || text.includes('uskup')) {
-                return { name: 'Tokoh Agama', class: 'ulama', icon: 'fas fa-mosque' };
-            }
-            
-            // Pahlawan Pembangunan
-            if (text.includes('pembangunan') || text.includes('menteri') || text.includes('gubernur') ||
-                text.includes('wakil presiden') || text.includes('presiden') || text.includes('perdana menteri') ||
-                text.includes('bank indonesia') || text.includes('insinyur')) {
-                return { name: 'Pahlawan Pembangunan', class: 'pembangunan', icon: 'fas fa-building' };
-            }
-            
-            return { name: '', class: '', icon: '' };
+        cat(h){
+            const t=(h.name+' '+(h.description||'')).toLowerCase();
+            const y=h.ascension_year;
+            const rn=['ahmad yani','suprapto','siswondo parman','mas tirtodarmo haryono','sutoyo','donald izacus panjaitan','pierre tendean','katamso darmokusumo','sugiyono mangunwiyoto','karel satsuit tubun'];
+            if(rn.some(n=>t.includes(n))||t.includes('gerakan 30 september')||t.includes('g30s'))
+                return{name:'Pahlawan Revolusi',cls:'revolusi',icon:'fas fa-fire'};
+            if(t.includes('revolusi nasional')||t.includes('kemerdekaan')||t.includes('proklamasi')||t.includes('aktivis kemerdekaan')||t.includes('nasionalis'))
+                return{name:'Pahlawan Kemerdekaan',cls:'kemerdekaan',icon:'fas fa-flag'};
+            if((t.includes('kolonial')||t.includes('voc')||t.includes('perang padri')||t.includes('perang banjar')||t.includes('gerilyawan')||t.includes('perlawanan'))&&y<1945)
+                return{name:'Pahlawan Perintis',cls:'perintis',icon:'fas fa-chess-rook'};
+            if(t.includes('pengajar')||t.includes('pendidikan')||t.includes('sekolah')||t.includes('universitas')||t.includes('taman siswa')||t.includes('budi utomo'))
+                return{name:'Pahlawan Pendidikan',cls:'pendidikan',icon:'fas fa-graduation-cap'};
+            if(t.includes('ulama')||t.includes('islam')||t.includes('muhammadiyah')||t.includes('nahdlatul ulama')||t.includes('katolik')||t.includes('uskup'))
+                return{name:'Tokoh Agama',cls:'ulama',icon:'fas fa-mosque'};
+            if(t.includes('menteri')||t.includes('gubernur')||t.includes('presiden')||t.includes('perdana menteri')||t.includes('bank indonesia')||t.includes('insinyur'))
+                return{name:'Pahlawan Pembangunan',cls:'pembangunan',icon:'fas fa-building'};
+            return{name:'',cls:'',icon:''};
         },
-
-        filterHeroes() {
-            const q = this.search.toLowerCase();
-            const region = this.selectedRegion;
-            this.filteredHeroes = this.heroes.filter(h => {
-                const matchSearch = !q || 
-                    h.name.toLowerCase().includes(q) ||
-                    (h.description && h.description.toLowerCase().includes(q));
-                const matchRegion = !region || this.getRegion(h).toLowerCase() === region;
-                return matchSearch && matchRegion;
+        filter(){
+            const q=this.q.toLowerCase();
+            const rg=this.region;
+            this.filtered=this.heroes.filter(h=>{
+                const ms=!q||h.name.toLowerCase().includes(q)||(h.description&&h.description.toLowerCase().includes(q));
+                const mr=!rg||this.reg(h).toLowerCase()===rg;
+                return ms&&mr;
             });
         },
-
-        sortHeroes(by) {
-            this.sortBy = by;
-            if (by === 'name') {
-                this.heroes.sort((a, b) => a.name.localeCompare(b.name));
-            } else if (by === 'year') {
-                this.heroes.sort((a, b) => (b.ascension_year || 0) - (a.ascension_year || 0));
-            }
-            this.filterHeroes();
+        sortBy(by){
+            this.sort=by;
+            if(by==='name')this.heroes.sort((a,b)=>a.name.localeCompare(b.name));
+            else if(by==='year')this.heroes.sort((a,b)=>(b.ascension_year||0)-(a.ascension_year||0));
+            this.filter();
         },
-
-        openModal(hero) {
-            this.selectedHero = hero;
-            this.modalOpen = true;
-            document.body.style.overflow = 'hidden';
-        },
-
-        closeModal() {
-            this.modalOpen = false;
-            this.selectedHero = null;
-            document.body.style.overflow = '';
-        },
-
-        calculateAge(hero) {
-            if (!hero) return '-';
-            const birth = parseInt(hero.birth_year);
-            const death = parseInt(hero.death_year);
-            if (isNaN(birth) || isNaN(death)) return '-';
-            return (death - birth) + ' tahun';
-        },
-
-        scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        open(h){this.sel=h;this.modal=true;document.body.style.overflow='hidden';},
+        close(){this.modal=false;this.sel=null;document.body.style.overflow='';},
+        age(h){
+            if(!h)return'-';
+            const b=parseInt(h.birth_year),d=parseInt(h.death_year);
+            if(isNaN(b)||isNaN(d))return'-';
+            return(d-b)+' tahun';
         }
     };
 }
