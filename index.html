@@ -318,6 +318,14 @@
         /* RESPONSIVE */
         @media(max-width:768px) {
             .nav-links { display:none; }
+            .nav-links.show {
+                display:flex; flex-direction:column;
+                position:absolute; top:100%; left:0; right:0;
+                background:rgba(5,5,5,0.98); backdrop-filter:blur(20px);
+                padding:24px 32px; gap:20px;
+                border-bottom:1px solid var(--border);
+            }
+            .nav-links.show a { font-size:1rem; }
             .hamburger { display:block; }
             .hero h1 { letter-spacing:-1px; }
             .hero-stats { gap:28px; }
