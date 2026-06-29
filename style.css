@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+/* HAMBURGER */
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+}
+.hamburger:hover { background: rgba(255,255,255,0.05); }
+.hamburger span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.3s;
+}
+.hamburger span:nth-child(1) { top: 13px; }
+.hamburger span:nth-child(2) { top: 19px; }
+.hamburger span:nth-child(3) { top: 25px; }
+.hamburger.active span:nth-child(1) { top: 19px; transform: translateX(-50%) rotate(45deg); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { top: 19px; transform: translateX(-50%) rotate(-45deg); }
+
+/* MOBILE MENU */
+@media (max-width: 768px) {
+    .hamburger { display: block; }
+    .nav-menu {
+        display: none !important;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(5,5,5,0.98);
+        backdrop-filter: blur(20px);
+        padding: 20px 24px;
+        flex-direction: column;
+        gap: 16px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .nav-menu.show { display: flex !important; }
+    .nav-menu a { font-size: 1rem; }
+}
+
+/* HERO GRID */
+.hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at 50% 50%, black, transparent);
+}
+
+/* CATEGORY BADGES */
+.cat-revolusi { background: rgba(239,68,68,0.15); color: #ef4444; }
+.cat-kemerdekaan { background: rgba(34,197,94,0.15); color: #22c55e; }
+.cat-perintis { background: rgba(168,85,247,0.15); color: #a855f7; }
+.cat-pendidikan { background: rgba(59,130,246,0.15); color: #3b82f6; }
+.cat-ulama { background: rgba(234,179,8,0.15); color: #eab308; }
+.cat-pembangunan { background: rgba(6,182,212,0.15); color: #06b6d4; }
+
+/* FOOTER SOCIAL */
+.footer-social {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.5);
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+.footer-social:hover {
+    background: rgba(245,158,11,0.15);
+    border-color: #f59e0b;
+    color: #f59e0b;
+    transform: translateY(-2px);
+}
+
+/* LINE CLAMP */
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
